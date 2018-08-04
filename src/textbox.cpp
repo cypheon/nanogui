@@ -36,6 +36,7 @@ TextBox::TextBox(Widget *parent,const std::string &value)
       mUnitsImage(-1),
       mValidFormat(true),
       mValueTemp(value),
+      mFont("sans"),
       mCursorPos(-1),
       mSelectionPos(-1),
       mMousePos(Vector2i(-1,-1)),
@@ -114,7 +115,7 @@ void TextBox::draw(NVGcontext* ctx) {
     nvgStroke(ctx);
 
     nvgFontSize(ctx, fontSize());
-    nvgFontFace(ctx, "sans");
+    nvgFontFace(ctx, mFont.c_str());
     Vector2i drawPos(mPos.x(), mPos.y() + mSize.y() * 0.5f + 1);
 
     float xSpacing = mSize.y() * 0.3f;
@@ -176,7 +177,7 @@ void TextBox::draw(NVGcontext* ctx) {
         }
 
         nvgFontSize(ctx, fontSize());
-        nvgFontFace(ctx, "sans");
+        nvgFontFace(ctx, mFont.c_str());
     }
 
     switch (mAlignment) {

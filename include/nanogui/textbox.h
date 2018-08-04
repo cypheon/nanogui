@@ -73,6 +73,11 @@ public:
     /// Specify a placeholder text to be displayed while the text box is empty.
     void setPlaceholder(const std::string &placeholder) { mPlaceholder = placeholder; }
 
+    /// Set the currently active font (2 are available by default: 'sans' and 'sans-bold')
+    void setFont(const std::string &font) { mFont = font; }
+    /// Get the currently active font
+    const std::string &font() const { return mFont; }
+
     /// Set the \ref Theme used to draw this widget
     virtual void setTheme(Theme *theme) override;
 
@@ -124,6 +129,7 @@ protected:
     bool mValidFormat;
     std::string mValueTemp;
     std::string mPlaceholder;
+    std::string mFont;
     int mCursorPos;
     int mSelectionPos;
     Vector2i mMousePos;

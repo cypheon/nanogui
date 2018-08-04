@@ -32,6 +32,8 @@ void register_textbox(py::module &m) {
         .def("setFormat", &TextBox::setFormat, D(TextBox, setFormat))
         .def("placeholder", &TextBox::placeholder, D(TextBox, placeholder))
         .def("setPlaceholder", &TextBox::setPlaceholder, D(TextBox, setPlaceholder))
+        .def("font", &TextBox::font, D(TextBox, font))
+        .def("setFont", &TextBox::setfont, D(TextBox, setFont))
         .def("callback", &TextBox::callback, D(TextBox, callback))
         .def("setCallback", &TextBox::setCallback, D(TextBox, setCallback));
 
