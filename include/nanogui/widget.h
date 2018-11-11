@@ -12,8 +12,10 @@
 
 #pragma once
 
+#include <nanogui/animation.h>
 #include <nanogui/object.h>
 #include <nanogui/theme.h>
+#include <list>
 #include <vector>
 
 NAMESPACE_BEGIN(nanogui)
@@ -30,6 +32,7 @@ enum class Cursor;// do not put a docstring, this is already documented
  * widgets using a layout generator (see \ref Layout).
  */
 class NANOGUI_EXPORT Widget : public Object {
+  friend class Animation;
 public:
     /// Construct a new widget with the given parent widget
     Widget(Widget *parent);
@@ -58,7 +61,7 @@ public:
     /// Return the position relative to the parent widget
     const Vector2i &position() const { return mPos; }
     /// Set the position relative to the parent widget
-    void setPosition(const Vector2i &pos) { mPos = pos; }
+    void setPosition(const Vector2i &pos) { mPos = pos; mPosAnimated = pos; /* TODO: clear current animations? */ }
 
     /// Return the absolute position on screen
     Vector2i absolutePosition() const {
@@ -274,13 +277,19 @@ protected:
      */
     inline float icon_scale() const { return mTheme->mIconScale * mIconExtraScale; }
 
+    // recalculate all animated values
+    void updateAnimations();
+
 protected:
     Widget *mParent;
     ref<Theme> mTheme;
     ref<Layout> mLayout;
     std::string mId;
     Vector2i mPos, mSize, mFixedSize;
+    Vector2i mPosAnimated;
     std::vector<Widget *> mChildren;
+
+    ::std::list<Animation> mAnimations;
 
     /**
      * Whether or not this Widget is currently visible.  When a Widget is not

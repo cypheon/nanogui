@@ -206,7 +206,7 @@ void Widget::draw(NVGcontext *ctx) {
     #if NANOGUI_SHOW_WIDGET_BOUNDS
         nvgStrokeWidth(ctx, 1.0f);
         nvgBeginPath(ctx);
-        nvgRect(ctx, mPos.x() - 0.5f, mPos.y() - 0.5f, mSize.x() + 1, mSize.y() + 1);
+        nvgRect(ctx, mPos.x() - 0.5f, mPosAnimated.y() - 0.5f, mSize.x() + 1, mSize.y() + 1);
         nvgStrokeColor(ctx, nvgRGBA(255, 0, 0, 255));
         nvgStroke(ctx);
     #endif
@@ -215,16 +215,29 @@ void Widget::draw(NVGcontext *ctx) {
         return;
 
     nvgSave(ctx);
-    nvgTranslate(ctx, mPos.x(), mPos.y());
+    nvgTranslate(ctx, mPos.x(), mPosAnimated.y());
     for (auto child : mChildren) {
         if (child->visible()) {
+            child->updateAnimations();
             nvgSave(ctx);
-            nvgIntersectScissor(ctx, child->mPos.x(), child->mPos.y(), child->mSize.x(), child->mSize.y());
+            nvgIntersectScissor(ctx, child->mPos.x(), child->mPosAnimated.y(), child->mSize.x(), child->mSize.y());
             child->draw(ctx);
             nvgRestore(ctx);
         }
     }
     nvgRestore(ctx);
+}
+
+void Widget::updateAnimations() {
+  if (mAnimations.empty()) {
+    return;
+  }
+
+  for (auto animation : mAnimations) {
+    animation.apply(this);
+  }
+
+  mAnimations.remove_if([](auto a) { return a.finished(); });
 }
 
 void Widget::save(Serializer &s) const {

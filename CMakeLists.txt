@@ -318,6 +318,7 @@ add_library(nanogui-obj OBJECT
   include/nanogui/glutil.h src/glutil.cpp
   include/nanogui/common.h src/common.cpp
   include/nanogui/widget.h src/widget.cpp
+  include/nanogui/animation.h src/animation.cpp
   include/nanogui/theme.h src/theme.cpp
   include/nanogui/layout.h src/layout.cpp
   include/nanogui/screen.h src/screen.cpp
